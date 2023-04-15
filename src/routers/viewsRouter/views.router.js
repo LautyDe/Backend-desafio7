@@ -39,4 +39,22 @@ router.get("/chat", async (req, res) => {
   });
 });
 
+router.get("/products", async (req, res) => {
+  const messages = await chatManager.getAllMessages();
+  res.render("products", {
+    style: "products.css",
+    title: "Products",
+    messages: messages,
+  });
+});
+
+router.get("/carts", async (req, res) => {
+  const messages = await chatManager.getAllMessages();
+  res.render("carts", {
+    style: "carts.css",
+    title: "Carts",
+    messages: messages,
+  });
+});
+
 export default router;

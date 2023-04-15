@@ -5,8 +5,8 @@ import views from "./viewsRouter/views.router.js";
 
 const router = Router();
 
-router.use("/products", products);
-router.use("/carts", carts);
+router.use("/api", products);
+router.use("/api", carts);
 router.use("/", views);
 
 export default router;
