@@ -3,7 +3,6 @@ import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import routers from "./src/routers/index.routers.js";
 import { __dirname } from "./src/utils.js";
-//import ProductManager from "./src/dao/fs/productManagerFS.js";
 import ProductManager from "./src/dao/mongo/productManagerMongo.js";
 import ChatManager from "./src/dao/mongo/chatManagerMongo.js";
 import "./src/db/dbConfig.js";

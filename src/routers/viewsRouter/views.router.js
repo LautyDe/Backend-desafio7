@@ -1,5 +1,4 @@
 import { Router } from "express";
-//import ProductManager from "../../dao/fs/productManagerFS.js";
 import ProductManager from "../../dao/mongo/productManagerMongo.js";
 import ChatManager from "../../dao/mongo/chatManagerMongo.js";
 
