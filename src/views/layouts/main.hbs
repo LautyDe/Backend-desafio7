@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" style="overflow-y:scroll">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,29 +7,46 @@
     <link rel="stylesheet" href="css/{{style}}" />
     <title>{{title}}</title>
   </head>
-  <body>
+  <body style="margin: 0;">
     <header style="position: sticky; top: 0; z-index: 1">
-      <nav style="place-content: center">
-        <div>
-          <ul style="margin: 0;">
-            <li style="padding: 0 10%;">
-              <a href="/">Home</a>
+      <navbar>
+        <div style="background-color: black; padding: 10px 0px">
+          <ul
+            style="list-style: none; display: flex; justify-content: space-between"
+          >
+            <li style="padding: 0 5%;">
+              <a
+                style="color: white; text-decoration: none; font-weight: bold"
+                href="/"
+              >Home</a>
             </li>
-            <li style="padding: 0 10%;">
-              <a href="/realTimeProducts">RealTime</a>
+            <li style="padding: 0 5%;">
+              <a
+                style="color: white; text-decoration: none; font-weight: bold"
+                href="/realTimeProducts"
+              >RealTime</a>
             </li>
-            <li style="padding: 0 10%;">
-              <a href="/chat">Chat</a>
+            <li style="padding: 0 5%;">
+              <a
+                style="color: white; text-decoration: none; font-weight: bold"
+                href="/chat"
+              >Chat</a>
             </li>
-            <li style="padding: 0 10%;">
-              <a href="/products">Products</a>
+            <li style="padding: 0 5%;">
+              <a
+                style="color: white; text-decoration: none; font-weight: bold"
+                href="/products"
+              >Products</a>
             </li>
-            <li style="padding: 0 10%;">
-              <a href="/carts">Carts</a>
+            <li style="padding: 0 5%;">
+              <a
+                style="color: white; text-decoration: none; font-weight: bold"
+                href="/carts"
+              >Carts</a>
             </li>
           </ul>
         </div>
-      </nav>
+      </navbar>
     </header>
     {{{body}}}
   </body>
