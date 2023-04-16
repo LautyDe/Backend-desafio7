@@ -13,7 +13,10 @@ export default class CartManager {
 
   async getById(id) {
     try {
-      const cart = await cartsModel.findOne({ _id: id }).populate("products");
+      const cart = await cartsModel
+        .findOne({ _id: id })
+        .populate("products.product")
+        .lean();
       return cart;
     } catch (error) {
       console.log(

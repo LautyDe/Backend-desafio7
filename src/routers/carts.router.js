@@ -16,21 +16,33 @@ const notFound = { error: "Cart not found" };
    internal server error: 500
     */
 
-router.post("/carts", async (req, res) => {
-  await cartManager.createCart();
-  res.status(201).json({ mensaje: "Carrito creado con exito" });
+router.post("/", async (req, res) => {
+  const cart = await cartManager.createCart();
+  res.status(201).json(cart);
 });
 
-router.get("/carts/:cid", async (req, res) => {
+router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
   const cart = await cartManager.getById(cid);
   !cart ? res.status(404).json(notFound) : res.status(200).json(cart);
 });
 
-router.post("/carts/:cid/product/:pid", async (req, res) => {
+router.put("/:cid", async (req, res) => {
+  const { cid } = req.params;
+});
+
+router.delete("/:cid", async (req, res) => {
+  const { cid } = req.params;
+});
+
+router.post("/:cid/product/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   const cart = await cartManager.addToCart(cid, pid);
   !cart ? res.status(404).json(notFound) : res.status(200).json(cart);
+});
+
+router.delete("/:cid/product/:pid", async (req, res) => {
+  const { cid, pid } = req.params;
 });
 
 export default router;

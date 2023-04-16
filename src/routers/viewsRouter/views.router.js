@@ -1,10 +1,13 @@
-import { Router } from "express";
+import { Router, json } from "express";
 import ProductManager from "../../dao/mongo/productManagerMongo.js";
 import ChatManager from "../../dao/mongo/chatManagerMongo.js";
+import { cartsModel } from "../../dao/models/carts.model.js";
+import CartManager from "../../dao/mongo/cartManagerMongo.js";
 
 const router = Router();
 const productManager = new ProductManager();
 const chatManager = new ChatManager();
+const cartManager = new CartManager();
 
 /* home */
 router.get("/", async (req, res) => {
@@ -13,9 +16,6 @@ router.get("/", async (req, res) => {
     style: "home.css",
     title: "Home",
     products: products,
-    handlebarsOptions: {
-      noEscape: true,
-    },
   });
 });
 
@@ -40,20 +40,21 @@ router.get("/chat", async (req, res) => {
 });
 
 router.get("/products", async (req, res) => {
-  const messages = await chatManager.getAllMessages();
   res.render("products", {
     style: "products.css",
     title: "Products",
-    messages: messages,
   });
 });
 
-router.get("/carts", async (req, res) => {
-  const messages = await chatManager.getAllMessages();
+router.get("/carts/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const cart = await cartManager.getById(cid);
+  const cartsProducts = cart.products;
   res.render("carts", {
     style: "carts.css",
     title: "Carts",
-    messages: messages,
+    cart: JSON.stringify(cart),
+    cartsProducts: JSON.stringify(cartsProducts),
   });
 });
 

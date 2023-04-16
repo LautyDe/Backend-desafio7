@@ -9,12 +9,4 @@ const cartsSchema = new mongoose.Schema({
   ],
 });
 
-/* const cartsSchema = new mongoose.Schema({
-  products: {
-    type: Array,
-    required: true,
-    default: [],
-  },
-}); */
-
 export const cartsModel = mongoose.model("Carts", cartsSchema);

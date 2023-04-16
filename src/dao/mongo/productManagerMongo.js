@@ -20,7 +20,7 @@ export default class ProductManager {
 
   async getAll() {
     try {
-      const allProducts = await productsModel.find().lean(); //leer lean()
+      const allProducts = await productsModel.find().lean();
       return allProducts;
     } catch (error) {
       console.log(`Error obteniendo todos los productos: ${error.message}`);
@@ -29,7 +29,7 @@ export default class ProductManager {
 
   async getById(id) {
     try {
-      const product = await productsModel.find({ _id: id });
+      const product = await productsModel.find({ _id: id }).lean();
       if (product) {
         return product;
       } else {
@@ -72,6 +72,15 @@ export default class ProductManager {
       console.log(
         `Error al eliminar el producto con el id solicitado: ${error.message}`
       );
+    }
+  }
+
+  async aggregationFunc(limit = null, page = null, sort = null, query = null) {
+    try {
+      const response = await productsModel.aggregate([{ $match: { query } }]);
+      return response;
+    } catch (error) {
+      console.log(`Error haciendo la funcion aggregation: ${error.message}`);
     }
   }
 

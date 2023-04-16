@@ -14,25 +14,43 @@ const notFound = { error: "Product not found" };
    internal server error: 500
     */
 
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
   const limit = req.query.limit;
-  const products = await productManager.getAll();
-
-  if (!limit) {
-    res.status(200).json(products);
-  } else {
-    const limitedProducts = products.slice(0, limit);
-    res.status(200).json(limitedProducts);
+  const page = req.query.page;
+  const sort = req.query.sort;
+  const query = req.query.query;
+  const response = {
+    status,
+    payload: [],
+    totalPages,
+    prevPage,
+    nextPage,
+    page,
+    hasPrevPage,
+    hasNextPage,
+    prevLink,
+    nextLink,
+  };
+  if (limit || page || sort || query) {
+    const aggregation = productManager.aggregationFunc(
+      limit,
+      page,
+      sort,
+      query
+    );
+    return res.status(200).json(aggregation);
   }
+
+  res.status(200).json(response);
 });
 
-router.get("/products/:pid", async (req, res) => {
+router.get("/:pid", async (req, res) => {
   const { pid } = req.params;
   const product = await productManager.getById(pid);
   !product ? res.status(404).json(notFound) : res.status(200).json(product);
 });
 
-router.post("/products", async (req, res) => {
+router.post("/", async (req, res) => {
   const product = req.body;
   const addedProduct = await productManager.addProduct(product);
   !addedProduct
@@ -40,7 +58,7 @@ router.post("/products", async (req, res) => {
     : res.status(201).json(product);
 });
 
-router.put("/products/:pid", async (req, res) => {
+router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   const modification = req.body;
   const modifiedProduct = await productManager.updateProduct(pid, modification);
@@ -49,7 +67,7 @@ router.put("/products/:pid", async (req, res) => {
     : res.status(200).json(modifiedProduct);
 });
 
-router.delete("/products/:pid", async (req, res) => {
+router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   const removedProduct = await productManager.deleteById(parseInt(pid));
   !removedProduct
@@ -57,7 +75,7 @@ router.delete("/products/:pid", async (req, res) => {
     : res.status(200).json(removedProduct);
 });
 
-router.delete("/products", async (req, res) => {
+router.delete("/", async (req, res) => {
   const removedProducts = await productManager.deleteAll();
   !removedProducts
     ? res.status(404).json({ error: "No se pudo eliminar los productos" })
