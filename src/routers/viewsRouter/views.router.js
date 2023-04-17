@@ -46,22 +46,21 @@ router.get("/products", async (req, res) => {
   });
 });
 
-router.get("/carts/", async (req, res) => {
+router.get("/carts", async (req, res) => {
   res.render("carts", {
     style: "carts.css",
     title: "Carts",
   });
 });
 
-router.get("/cartsId/:cid", async (req, res) => {
+router.get("/carts/:cid", async (req, res) => {
   const { cid } = req.params;
   const cart = await cartManager.getById(cid);
   const cartsProducts = cart.products;
   res.render("cartsId", {
     style: "cartsId.css",
     title: "CartsId",
-    cart: JSON.stringify(cart),
-    cartsProducts: JSON.stringify(cartsProducts),
+    cartsProducts: cartsProducts,
   });
 });
 
