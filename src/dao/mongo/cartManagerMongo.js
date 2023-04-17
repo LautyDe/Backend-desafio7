@@ -41,29 +41,20 @@ export default class CartManager {
 
   async addToCart(cid, pid) {
     try {
-      const cart = await cartsModel.findById(cid); //this.getById(cid);
+      const cart = await cartsModel.findOneAndUpdate(
+        { _id: cid, "products.product": pid },
+        { $inc: { "products.$.quantity": 1 } },
+        { new: true }
+      );
       if (!cart) {
-        throw new Error(`No se encontro un carrito con el id solicitado.`);
-      } else {
-        const product = await productsModel.findById(pid);
-        if (!product) {
-          throw new Error(`No se encontro el product con el id solicitado.`);
-        } else {
-          const cartProduct = cart.products.find(
-            product => product.product.toString() === pid
-          );
-          if (cartProduct) {
-            cartProduct.quantity++;
-          } else {
-            await cartsModel.findOneAndUpdate(
-              { _id: cid },
-              { $push: { products: { product: pid, quantity: 1 } } }
-            );
-          }
-          cart.save();
-          return cart;
-        }
+        const cart = await cartsModel.findOneAndUpdate(
+          { _id: cid },
+          { $addToSet: { products: { product: pid, quantity: 1 } } },
+          { new: true }
+        );
+        return cart;
       }
+      return cart;
     } catch (error) {
       console.log(`Error agregando producto al carrito: ${error.message}`);
     }
