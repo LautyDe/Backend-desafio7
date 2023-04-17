@@ -33,6 +33,9 @@ router.put("/:cid", async (req, res) => {
 
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;
+  const cart = cartManager.deleteAllProducts(cid);
+  const updatedCart = await cartManager.getById(cid);
+  !cart ? res.status(404).json(notFound) : res.status(200).json(updatedCart);
 });
 
 router.post("/:cid/product/:pid", async (req, res) => {

@@ -15,33 +15,8 @@ const notFound = { error: "Product not found" };
     */
 
 router.get("/", async (req, res) => {
-  const limit = req.query.limit;
-  const page = req.query.page;
-  const sort = req.query.sort;
-  const query = req.query.query;
-  const response = {
-    status,
-    payload: [],
-    totalPages,
-    prevPage,
-    nextPage,
-    page,
-    hasPrevPage,
-    hasNextPage,
-    prevLink,
-    nextLink,
-  };
-  if (limit || page || sort || query) {
-    const aggregation = productManager.aggregationFunc(
-      limit,
-      page,
-      sort,
-      query
-    );
-    return res.status(200).json(aggregation);
-  }
-
-  res.status(200).json(response);
+  const products = await productManager.getAll();
+  res.status(200).json(products);
 });
 
 router.get("/:pid", async (req, res) => {

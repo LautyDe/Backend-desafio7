@@ -11,6 +11,20 @@ export default class CartManager {
     }
   }
 
+  async deleteAllProducts(id) {
+    try {
+      const cart = await cartsModel.findOneAndUpdate(
+        { _id: id },
+        { products: [] }
+      );
+      return cart;
+    } catch (error) {
+      console.log(
+        `Error eliminando todos los productos del carrito: ${error.message}`
+      );
+    }
+  }
+
   async getById(id) {
     try {
       const cart = await cartsModel
@@ -41,7 +55,6 @@ export default class CartManager {
           if (cartProduct) {
             cartProduct.quantity++;
           } else {
-            console.log("$push");
             await cartsModel.findOneAndUpdate(
               { _id: cid },
               { $push: { products: { product: pid, quantity: 1 } } }
