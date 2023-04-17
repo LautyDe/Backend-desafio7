@@ -69,6 +69,38 @@ export default class CartManager {
     }
   }
 
+  async deleteProduct(cid, pid) {
+    try {
+      const cart = await cartsModel.findById(cid); //this.getById(cid);
+      if (!cart) {
+        throw new Error(`No se encontro un carrito con el id solicitado.`);
+      } else {
+        const product = await productsModel.findById(pid);
+        if (!product) {
+          throw new Error(`No se encontro el product con el id solicitado.`);
+        } else {
+          const cartProduct = cart.products.find(
+            product => product.product.toString() === pid
+          );
+          if (!cartProduct) {
+            throw new Error(`Producto no se encuentra en el carrito.`);
+          } else {
+            const quantity = cartProduct.quantity;
+            if (quantity > 1) {
+              cartProduct.quantity--;
+            } else {
+              //falta eliminar el producto cuando el quantity es 1
+            }
+          }
+          cart.save();
+          return cart;
+        }
+      }
+    } catch (error) {
+      console.log(`Error eliminando producto del carrito: ${error.message}`);
+    }
+  }
+
   async deleteAllProducts(id) {
     try {
       const cart = await cartsModel.findOneAndUpdate(
