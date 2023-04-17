@@ -3,6 +3,14 @@ h2 {
   text-align: center;
 }
 
+.finish {
+  color: white;
+  text-decoration: none;
+  background-color: black;
+  padding: 8px;
+  border-radius: 15px;
+}
+
 .img {
   width: 60px;
   height: 60px;
@@ -22,6 +30,7 @@ h2 {
   text-align: center;
   color: white;
   border-radius: 10px;
+  cursor: pointer;
 }
 .minusButton {
   background-color: red;
@@ -30,4 +39,5 @@ h2 {
   text-align: center;
   color: white;
   border-radius: 10px;
+  cursor: pointer;
 }
