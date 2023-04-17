@@ -11,17 +11,17 @@ export default class CartManager {
     }
   }
 
-  async deleteAllProducts(id) {
+  async deleteCart(id) {
     try {
-      const cart = await cartsModel.findOneAndUpdate(
-        { _id: id },
-        { products: [] }
-      );
-      return cart;
+      const cart = await this.getById(id);
+      if (!cart) {
+        throw new Error(`No se encontro carrito con el id solicitado.`);
+      } else {
+        await cartsModel.findOneAndDelete({ _id: id });
+        return "Carrito eliminado correctamente";
+      }
     } catch (error) {
-      console.log(
-        `Error eliminando todos los productos del carrito: ${error.message}`
-      );
+      console.log(`Error eliminando el carrito`);
     }
   }
 
@@ -66,6 +66,20 @@ export default class CartManager {
       }
     } catch (error) {
       console.log(`Error agregando producto al carrito: ${error.message}`);
+    }
+  }
+
+  async deleteAllProducts(id) {
+    try {
+      const cart = await cartsModel.findOneAndUpdate(
+        { _id: id },
+        { products: [] }
+      );
+      return cart;
+    } catch (error) {
+      console.log(
+        `Error eliminando todos los productos del carrito: ${error.message}`
+      );
     }
   }
 }
