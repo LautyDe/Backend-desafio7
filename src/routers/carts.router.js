@@ -41,15 +41,13 @@ router.delete("/:cid", async (req, res) => {
 router.post("/:cid/product/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   const cart = await cartManager.addToCart(cid, pid);
-  const updatedCart = await cartManager.getById(cid);
-  !cart ? res.status(404).json(notFound) : res.status(200).json(updatedCart);
+  !cart ? res.status(404).json(notFound) : res.status(200).json(cart);
 });
 
 router.delete("/:cid/product/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   const cart = await cartManager.deleteProduct(cid, pid);
-  const updatedCart = await cartManager.getById(cid);
-  !cart ? res.status(404).json(notFound) : res.status(200).json(updatedCart);
+  !cart ? res.status(404).json(notFound) : res.status(200).json(cart);
 });
 
 export default router;

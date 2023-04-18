@@ -17,11 +17,11 @@ export default class CartManager {
       if (!cart) {
         throw new Error(`No se encontro carrito con el id solicitado.`);
       } else {
-        await cartsModel.findOneAndDelete({ _id: id });
+        await cartsModel.findOneAndDelete({ _id: id }, { new: true });
         return "Carrito eliminado correctamente";
       }
     } catch (error) {
-      console.log(`Error eliminando el carrito`);
+      console.log(`Error eliminando el carrito: ${error.message}`);
     }
   }
 
@@ -31,10 +31,14 @@ export default class CartManager {
         .findOne({ _id: id })
         .populate("products.product")
         .lean();
-      return cart;
+      if (!cart) {
+        throw new Error(`No existe.`);
+      } else {
+        return cart;
+      }
     } catch (error) {
       console.log(
-        `Error buscando el carrito con el id ${id}: ${error.message}`
+        `Error buscando el carrito con el id solicitado: ${error.message}`
       );
     }
   }
@@ -62,30 +66,22 @@ export default class CartManager {
 
   async deleteProduct(cid, pid) {
     try {
-      const cart = await cartsModel.findById(cid); //this.getById(cid);
-      if (!cart) {
-        throw new Error(`No se encontro un carrito con el id solicitado.`);
+      const cart = await this.getById(cid);
+      const quantity = cart.products.find(item => item.product._id).quantity;
+      if (quantity > 1) {
+        const cart = await cartsModel.findOneAndUpdate(
+          { _id: cid, "products.product": pid },
+          { $set: { "products.$.quantity": quantity - 1 } },
+          { new: true }
+        );
+        return cart;
       } else {
-        const product = await productsModel.findById(pid);
-        if (!product) {
-          throw new Error(`No se encontro el product con el id solicitado.`);
-        } else {
-          const cartProduct = cart.products.find(
-            product => product.product.toString() === pid
-          );
-          if (!cartProduct) {
-            throw new Error(`Producto no se encuentra en el carrito.`);
-          } else {
-            const quantity = cartProduct.quantity;
-            if (quantity > 1) {
-              cartProduct.quantity--;
-            } else {
-              //falta eliminar el producto cuando el quantity es 1
-            }
-          }
-          cart.save();
-          return cart;
-        }
+        /* const cart = await cartsModel.findOneAndUpdate( falta sacar el product 
+          { _id: cid, "products.products": pid },
+          { $unset: { product: "" } },
+          { new: true }
+        );
+        return cart; */
       }
     } catch (error) {
       console.log(`Error eliminando producto del carrito: ${error.message}`);
@@ -96,7 +92,7 @@ export default class CartManager {
     try {
       const cart = await cartsModel.findOneAndUpdate(
         { _id: id },
-        { products: [] }
+        { $set: { products: [] } }
       );
       return cart;
     } catch (error) {
