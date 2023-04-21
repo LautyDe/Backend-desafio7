@@ -76,12 +76,12 @@ export default class CartManager {
         );
         return cart;
       } else {
-        /* const cart = await cartsModel.findOneAndUpdate( falta sacar el product 
-          { _id: cid, "products.products": pid },
-          { $unset: { product: "" } },
+        const cart = await cartsModel.findOneAndUpdate(
+          { _id: cid },
+          { $pull: { "products": { "product": pid } } },
           { new: true }
         );
-        return cart; */
+        return cart;
       }
     } catch (error) {
       console.log(`Error eliminando producto del carrito: ${error.message}`);
