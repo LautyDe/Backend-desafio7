@@ -15,12 +15,15 @@ const notFound = { error: "Product not found" };
     */
 
 router.get("/", async (req, res) => {
-  /* const products = await productManager.getAll();
-  res.status(200).json(products); */
   const { limit, page, sort, query } = req.query;
-  const products = await productManager.getAll(limit, page, sort, query);
+  const products = await productManager.getAllPaginated(
+    limit,
+    page,
+    sort,
+    query
+  );
 
-  products.docs = products.docs.map(product => {
+  products.docs = await products.docs.map(product => {
     const { _id, title, description, price, code, stock, category, thumbnail } =
       product;
     return {

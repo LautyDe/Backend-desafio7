@@ -1,29 +1,3 @@
-h1,
-h2 {
+h1 {
   text-align: center;
-}
-
-img {
-  margin-bottom: 10px;
-  height: 250px;
-  width: 250px;
-}
-
-.productsContainer {
-  display: grid;
-  grid-template-columns: 33vw 33vw 33vw;
-  justify-items: center;
-}
-
-.productsCard {
-  background-color: black;
-  color: white;
-  text-align: center;
-  height: auto;
-  width: 300px;
-  margin: 20px 0;
-}
-
-.productsCard:hover {
-  transform: scale(1.15);
 }

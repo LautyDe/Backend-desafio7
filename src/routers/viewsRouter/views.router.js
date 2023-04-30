@@ -1,7 +1,6 @@
-import { Router, json } from "express";
+import { Router } from "express";
 import ProductManager from "../../dao/mongo/productManagerMongo.js";
 import ChatManager from "../../dao/mongo/chatManagerMongo.js";
-import { cartsModel } from "../../dao/models/carts.model.js";
 import CartManager from "../../dao/mongo/cartManagerMongo.js";
 
 const router = Router();

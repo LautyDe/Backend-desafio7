@@ -5,12 +5,14 @@ import routers from "./src/routers/index.routers.js";
 import { __dirname } from "./src/utils.js";
 import ProductManager from "./src/dao/mongo/productManagerMongo.js";
 import ChatManager from "./src/dao/mongo/chatManagerMongo.js";
+import CartManager from "./src/dao/mongo/cartManagerMongo.js";
 import "./src/db/dbConfig.js";
 
 const app = express();
 const PORT = 8080;
 const productManager = new ProductManager();
 const chatManager = new ChatManager();
+const cartManager = new CartManager();
 
 /* middlewares */
 app.use(express.json());
@@ -67,5 +69,10 @@ socketServer.on("connection", async socket => {
   socket.on("newMessage", async data => {
     await chatManager.addMessage(data);
     socket.emit("messages", messages);
+  });
+
+  socket.on("cart", async id => {
+    const cart = await cartManager.getById(id);
+    socket.emit("cart", cart);
   });
 });
