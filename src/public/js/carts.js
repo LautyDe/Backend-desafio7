@@ -5,12 +5,20 @@ socketClient.on("cart", data => {
 });
 
 function render(data) {
-  console.log(data);
+  if (!data) {
+    const html = `<h1>Carrito seleccionado sin productos, por favor revise el id o introduzca algun producto 🫱🏽‍🫲🏽</h1>`;
+    return (document.getElementById("cart").innerHTML = html);
+  }
+
   const html = data.products
-    .map(product => {
-      return `<div class="product">
-      <p class="messageUser">${product.user}:</p> <p class="messageText">${product.message}</p>
-      </div>
+    .map(item => {
+      return `<div class="productsCard">
+      <h3>${item.product.title}</h3>
+      <img src="${item.product.thumbnail}" />
+      <h4>Precio: ${item.product.price}</h4>
+      <h5>Descripcion: ${item.product.description}</h5>
+      <h5>Cantidad: ${item.quantity}</h5>
+    </div>
       `;
     })
     .join(" ");
@@ -19,10 +27,7 @@ function render(data) {
 
 function searchCart() {
   const cartsId = document.getElementById("cartsId").value;
-
-  if (cartsId) {
-    socketClient.emit("cart", cartsId);
-    const form = document.getElementById("searchCart");
-    form.reset();
-  }
+  socketClient.emit("cart", cartsId);
+  const form = document.getElementById("searchCart");
+  form.reset();
 }
