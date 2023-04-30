@@ -5,8 +5,14 @@
     {{#each products}}
       <div class="productsCard">
         <h3>Nombre: {{title}}</h3>
-        <h4>Precio:{{price}}</h4>
-        <img src="{{thumbnail}}" /></div>
+        <h4>Descripcion: {{description}}</h4>
+        <h4>Precio: {{price}}</h4>
+        <img src="{{thumbnail}}" />
+        <div class="buttons">
+          <button class="minusButton">-</button>
+          <button class="plusButton">+</button>
+        </div>
+      </div>
     {{/each}}
   </section>
 {{else}}

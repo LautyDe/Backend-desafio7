@@ -39,9 +39,11 @@ router.get("/chat", async (req, res) => {
 });
 
 router.get("/products", async (req, res) => {
+  const products = await productManager.getAll();
   res.render("products", {
     style: "products.css",
     title: "Products",
+    products: products,
   });
 });
 

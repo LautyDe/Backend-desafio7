@@ -16,7 +16,6 @@ function render(data) {
       <h3>${item.product.title}</h3>
       <img src="${item.product.thumbnail}" />
       <h4>Precio: ${item.product.price}</h4>
-      <h5>Descripcion: ${item.product.description}</h5>
       <h5>Cantidad: ${item.quantity}</h5>
     </div>
       `;

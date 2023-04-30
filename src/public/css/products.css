@@ -28,3 +28,23 @@ img {
 .productsCard:hover {
   transform: scale(1.15);
 }
+
+.buttons {
+  margin: 0 0 10px 0;
+}
+
+.minusButton {
+  border: none;
+  background-color: red;
+  border-radius: 6.5px;
+  color: white;
+  width: 50px;
+}
+
+.plusButton {
+  border: none;
+  background-color: green;
+  border-radius: 6.5px;
+  color: white;
+  width: 50px;
+}
