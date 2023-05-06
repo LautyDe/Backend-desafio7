@@ -9,8 +9,11 @@
         <h4>Precio: {{price}}</h4>
         <img src="{{thumbnail}}" />
         <div class="buttons">
-          <button class="minusButton">-</button>
-          <button class="plusButton">+</button>
+          <button
+            onclick="deleteProduct({{_id}})"
+            class="minusButton"
+          >-</button>
+          <button onclick="deleteProduct({{_id}})" class="plusButton">+</button>
         </div>
       </div>
     {{/each}}
@@ -18,3 +21,5 @@
 {{else}}
   <h3>Error cargando los productos, por favor intente recargar la pagina 🔃</h3>
 {{/if}}
+
+<script src="/js/products.js"></script>
