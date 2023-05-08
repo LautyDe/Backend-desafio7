@@ -27,19 +27,25 @@ export default class ProductManager {
     }
   }
 
-  async getAllPaginated(limit, page, sort, query) {
+  async getAllPaginated(limit, page, sort, title = "", category = "") {
     try {
-      const search = query
-        ? {
-            stock: { $gte: 0 },
+      console.log(
+        { category: { $in: category, $options: "i" } },
+        { title: { $in: title, $options: "i" } }
+      );
+      const search = {
+        stock: { $gte: 0 },
+        $and: [
+          {
             $or: [
-              { category: { $regex: query, $options: "i" } },
-              { title: { $regex: query, $options: "i" } },
+              { category: { $in: [category], $options: "i" } },
+              { title: { $in: [title], $options: "i" } },
             ],
-          }
-        : {
-            stock: { $gte: 0 },
-          };
+          },
+        ],
+      } && {
+        stock: { $gte: 0 },
+      };
 
       if (sort === "asc") {
         sort = { price: 1 };
