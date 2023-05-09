@@ -15,7 +15,14 @@ const notFound = { error: "Product not found" };
     */
 
 router.get("/", async (req, res) => {
-  const { limit, page, sort, title, category } = req.query;
+  const {
+    limit = 10,
+    page = 1,
+    sort = "asc",
+    title = "",
+    category = "",
+  } = req.query;
+
   const products = await productManager.getAllPaginated(
     limit,
     page,
@@ -24,38 +31,48 @@ router.get("/", async (req, res) => {
     category
   );
 
-  products.docs = await products.docs.map(product => {
-    const { _id, title, description, price, code, stock, category, thumbnail } =
-      product;
-    return {
-      id: _id,
-      title,
-      description,
-      price,
-      code,
-      stock,
-      category,
-      thumbnail,
-    };
-  });
+  try {
+    products.docs = await products.docs.map(product => {
+      const {
+        _id,
+        title,
+        description,
+        price,
+        code,
+        stock,
+        category,
+        thumbnail,
+      } = product;
+      return {
+        id: _id,
+        title,
+        description,
+        price,
+        code,
+        stock,
+        category,
+        thumbnail,
+      };
+    });
 
-  const info = {
-    totalPages: products.totalPages,
-    prevPage: products.prevPage,
-    nextPage: products.nextPage,
-    page: products.page,
-    hasPrevPage: products.hasPrevPage,
-    hasNextPage: products.hasNextPage,
-    prevLink: products.hasPrevPage
-      ? `http://localhost:8080/api/products?page=${products.prevPage}`
-      : null,
-    nextLink: products.hasNextPage
-      ? `http://localhost:8080/api/products?page=${products.nextPage}`
-      : null,
-  };
-  if (info) {
+    const info = {
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      page: products.page,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink: products.hasPrevPage
+        ? `http://localhost:8080/api/products?page=${products.prevPage}`
+        : null,
+      nextLink: products.hasNextPage
+        ? `http://localhost:8080/api/products?page=${products.nextPage}`
+        : null,
+    };
+
     res.status(200).send({ status: "success", payload: products.docs, info });
-  } else {
+  } catch (err) {
+    console.log(err.message);
     res
       .status(500)
       .send({ status: "error", error: "Error obteniendo todos los productos" });

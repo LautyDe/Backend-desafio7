@@ -29,22 +29,10 @@ export default class ProductManager {
 
   async getAllPaginated(limit, page, sort, title = "", category = "") {
     try {
-      console.log(
-        { category: { $in: category, $options: "i" } },
-        { title: { $in: title, $options: "i" } }
-      );
       const search = {
         stock: { $gte: 0 },
-        $and: [
-          {
-            $or: [
-              { category: { $in: [category], $options: "i" } },
-              { title: { $in: [title], $options: "i" } },
-            ],
-          },
-        ],
-      } && {
-        stock: { $gte: 0 },
+        category: { $regex: category, $options: "i" },
+        title: { $regex: title, $options: "i" },
       };
 
       if (sort === "asc") {
@@ -54,9 +42,9 @@ export default class ProductManager {
       }
 
       const options = {
-        page: page || 1,
-        limit: limit || 10,
-        sort: sort,
+        page,
+        limit,
+        sort,
         lean: true,
       };
 
